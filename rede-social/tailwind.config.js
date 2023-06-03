@@ -13,8 +13,9 @@ module.exports = {
         black: ['Inter_900Black', 'Arial', 'sans-serif'],
       },
       colors:{
-        black: {
-          900:"#121214"
+        backgroundColor: {
+          900:"#121214",
+          800:'#18181b' 
         },
       }
     },

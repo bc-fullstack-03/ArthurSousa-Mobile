@@ -4,7 +4,7 @@ export  function Home() {
   return (
     <View className="flex-1 items-center justify-center">
      
-      <Text className=""> Home</Text>
+      <Text className="text-white"> Home</Text>
 
     </View>
   );
