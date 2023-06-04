@@ -1,12 +1,27 @@
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
-import { Text, View } from 'react-native';
-export  function Home() {
-  return (
-    <View className="flex-1 items-center justify-center">
-     
-      <Text className="text-white"> Home</Text>
+import { CreatPost } from './CreatPost';
+import { PostList } from './PostList';
 
-    </View>
+const Stack = createNativeStackNavigator()
+
+
+
+export  function Home() {
+
+  return (
+    <Stack.Navigator 
+    screenOptions={{
+      headerShown: false,
+      statusBarStyle:'dark',
+     }
+    }
+    >
+      <Stack.Screen name='PostList'component={PostList} />
+      <Stack.Screen  name='CreatePost'component={CreatPost}/>
+
+     
+    </Stack.Navigator>
   );
 }
 

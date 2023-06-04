@@ -71,11 +71,13 @@ function App() {
              },
              tabBarShowLabel: false,
              headerShown: false,
+             statusBarStyle: 'dark',
+
 
           })}
 
         >
-          <Tab.Screen name="Home" component={Home} />
+          <Tab.Screen  name="Home" component={Home} />
           <Tab.Screen name="Friends" component={Friends} />
           <Tab.Screen name="Profile" component={Profile} />
         </Tab.Navigator>

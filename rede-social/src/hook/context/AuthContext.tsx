@@ -14,6 +14,8 @@ interface AuthContextLogin {
   login?: () => void;
   tryLocalLogin?: () => void;
   register?: () => void;
+  logout?: () => void;
+
 }
 
 
@@ -29,8 +31,8 @@ const defaultValue = {
 
 const Context = createContext<AuthContextLogin>(defaultValue)
 
-const Provider = ({ children }: { children: ReactNode }) => {
-  const reducer = (state: AuthContextLogin, action:any) => {
+function Provider({ children }: { children: ReactNode }) {
+  function reducer(state: AuthContextLogin, action: any) {
     switch (action.type) {
       case "login":
         return {
@@ -62,9 +64,9 @@ const Provider = ({ children }: { children: ReactNode }) => {
 
   const [state, dispatch] = useReducer(reducer, defaultValue);
 
-  const login = async (auth: Auth) => {
+  async function login(auth: Auth) {
     try {
-      const {data} = await api.post('security/login', auth);
+      const { data } = await api.post('security/login', auth);
       const { user, profile } = jwtDecode(
         data.accessToken
       ) as UserToken;
@@ -90,7 +92,7 @@ const Provider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const tryLocalLogin = async () => {
+  async function tryLocalLogin() {
     try {
       const token = await SecurityStrore.getItemAsync("token");
       const user = await SecurityStrore.getItemAsync("user");
@@ -110,16 +112,16 @@ const Provider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const register = async (auth: Auth) => {
+  async function register(auth: Auth) {
     try {
-      await  api.post('security/register',auth);
+      await api.post('security/register', auth);
       dispatch({
         type: "user_created",
         isLoading: false,
       });
     } catch (err) {
       console.log(err);
-      
+
       dispatch({
         type: "add_error",
         payload: "Houve um erro no cadastro.",
@@ -127,7 +129,7 @@ const Provider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const logout = async () => {
+  async function logout() {
     try {
       await SecurityStrore.deleteItemAsync("token");
       await SecurityStrore.deleteItemAsync("user");
@@ -157,6 +159,7 @@ const Provider = ({ children }: { children: ReactNode }) => {
           login,
           tryLocalLogin,
           register,
+          logout,
         }
 
       }
