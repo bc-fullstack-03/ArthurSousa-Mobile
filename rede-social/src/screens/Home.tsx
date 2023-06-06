@@ -1,5 +1,6 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
+import { Provider as PostProvider } from '../hook/context/PostContext';
 import { CreatPost } from './CreatPost';
 import { PostList } from './PostList';
 
@@ -7,7 +8,7 @@ const Stack = createNativeStackNavigator()
 
 
 
-export  function Home() {
+ function Home() {
 
   return (
     <Stack.Navigator 
@@ -23,5 +24,16 @@ export  function Home() {
      
     </Stack.Navigator>
   );
+
+
+}
+
+export default () => {
+  return (
+    <PostProvider>
+      <Home/>
+    </PostProvider>
+  )
+
 }
 

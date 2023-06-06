@@ -2,13 +2,15 @@ import { Inter_400Regular, Inter_600SemiBold, Inter_700Bold, Inter_900Black, use
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { StatusBar } from 'expo-status-bar';
 import { House, User, UsersThree } from 'phosphor-react-native';
 import React, { useContext, useEffect } from 'react';
+import { Platform } from 'react-native';
 import colors from 'tailwindcss/colors';
 import { Loading } from './src/components/Loading';
 import { Context as AuthContext, Provider as AuthProvider } from './src/hook/context/AuthContext';
 import { Friends } from './src/screens/Friends';
-import { Home } from './src/screens/Home';
+import Home from './src/screens/Home';
 import { Login } from './src/screens/Login';
 import { Profile } from './src/screens/Profile';
 import { SignUp } from './src/screens/SignUp';
@@ -42,6 +44,7 @@ function App() {
 
 
     <NavigationContainer theme={AppTheme}>
+         {Platform.OS === 'ios' && <StatusBar hidden />}
       {!token ? (
         <Stack.Navigator screenOptions={{ headerShown: false, statusBarStyle: 'dark' }}>
           <Stack.Screen name="Login" component={Login} />
@@ -53,34 +56,35 @@ function App() {
             tabBarIcon: ({ color, size }) => {
               switch (route.name) {
                 case 'Home':
-                  return <House size={size} color={color}/>
+                  return <House size={size} color={color} />
 
                 case 'Friends':
-                  return <UsersThree size={size} color={color}/>
+                  return <UsersThree size={size} color={color} />
 
                 case 'Profile':
-                  return <User size={size} color={color}/>
+                  return <User size={size} color={color} />
 
                 default:
                   return null
-
               }
             },
-            tabBarStyle:{
+            tabBarStyle: {
               backgroundColor: colors.black,
-             },
-             tabBarShowLabel: false,
-             headerShown: false,
-             statusBarStyle: 'dark',
-
-
+            },
+            tabBarLabelStyle: {
+              color: 'white', // Defina a cor do texto como preto
+            },
+        
+            tabBarShowLabel: false,
+            headerShown: false,
+         
           })}
-
         >
-          <Tab.Screen  name="Home" component={Home} />
+          <Tab.Screen name="Home" component={Home} />
           <Tab.Screen name="Friends" component={Friends} />
           <Tab.Screen name="Profile" component={Profile} />
         </Tab.Navigator>
+
       )}
     </NavigationContainer>
 

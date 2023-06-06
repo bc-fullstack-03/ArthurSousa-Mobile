@@ -1,20 +1,33 @@
-import { PencilSimple, UserCircle } from "phosphor-react-native";
-import { useContext } from "react";
-import { SafeAreaView, Text, TouchableOpacity, View } from "react-native";
-import colors from 'tailwindcss/colors';
+import { useContext, useEffect } from "react";
+import { FlatList, SafeAreaView, View } from "react-native";
+import { HomerHeader } from "../components/HomerHeader";
+import { PostItem } from "../components/PostItem";
 import { Context as AuthContext } from '../hook/context/AuthContext';
+import { Context as PostContext } from '../hook/context/PostContext';
+
+
 export  function PostList({navigation}:any){
   const {user} = useContext(AuthContext)
+  const {posts, getPosts} = useContext(PostContext)
+
+  useEffect(() => {
+    getPosts()
+  } , [])
+
   return(
-    <SafeAreaView className='flex-1 pt-3  '>
-     <View className='flex-row items-center gap-2 px-12 pb-12 border-b border-zinc-800'>
-        <UserCircle color={colors.gray[400]} weight="thin" size={48}/>
-        <Text className="text-zinc-400 font-bold text-sm">{user}</Text>
-        <View className='flex-1'></View>
-        <TouchableOpacity onPress={() => navigation.navigate('CreatePost')}>
-          <PencilSimple color={colors.gray[400]} weight='thin' size={40}/>
-        </TouchableOpacity>
-     </View>
+    <SafeAreaView className=' flex-1'>
+      <HomerHeader navigation={navigation}  user={user}/>
+
+      <View className='flex-1'>
+        <FlatList
+          data={posts}
+          keyExtractor={({_id}) => _id}
+          renderItem={({item}) => (
+              <PostItem post={item}/>
+            )}      
+ 
+        />
+      </View>
 
     </SafeAreaView>
   )

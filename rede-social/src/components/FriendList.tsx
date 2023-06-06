@@ -3,14 +3,10 @@ import { UserCircle } from "phosphor-react-native";
 import { Text, View } from "react-native";
 import colors from 'tailwindcss/colors';
 import { Button } from "../components/Button";
+import { Profile } from "../types/Profile";
 
 
- interface Profile {
-  _id: string;
-  name: string;
-  followers: string[];
-  following: string[];
-}
+
 interface FriendListProps{
   profile: Profile;
   handleFollowAction: (profileId:string) => void;
