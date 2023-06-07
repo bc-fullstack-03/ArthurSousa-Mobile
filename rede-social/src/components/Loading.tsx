@@ -12,7 +12,7 @@ export function Loading() {
         source={loading}
         className="w-28 h-28 "
       />
-      <Text className="text-white mt-5">LOADING...</Text>
+      <Text className="text-white animate-spin mt-5">LOADING...</Text>
     </View>
   );
 }

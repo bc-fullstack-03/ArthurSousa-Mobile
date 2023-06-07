@@ -2,11 +2,10 @@ import { Inter_400Regular, Inter_600SemiBold, Inter_700Bold, Inter_900Black, use
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { StatusBar } from 'expo-status-bar';
 import { House, User, UsersThree } from 'phosphor-react-native';
 import React, { useContext, useEffect } from 'react';
-import { Platform } from 'react-native';
 import colors from 'tailwindcss/colors';
+import { navigationRef } from './src/RootNavigation';
 import { Loading } from './src/components/Loading';
 import { Context as AuthContext, Provider as AuthProvider } from './src/hook/context/AuthContext';
 import { Friends } from './src/screens/Friends';
@@ -43,8 +42,8 @@ function App() {
   return (
 
 
-    <NavigationContainer theme={AppTheme}>
-         {Platform.OS === 'ios' && <StatusBar hidden />}
+    <NavigationContainer theme={AppTheme} ref={navigationRef}>
+       
       {!token ? (
         <Stack.Navigator screenOptions={{ headerShown: false, statusBarStyle: 'dark' }}>
           <Stack.Screen name="Login" component={Login} />

@@ -1,7 +1,10 @@
+import * as SecureStore from 'expo-secure-store';
 import { ReactNode, createContext, useReducer } from 'react';
+import { navigation } from '../../RootNavigation';
 import { api } from '../../lib/axios';
-import { getAuthHeader, getProfile } from '../../services/auth';
+import { getAuthHeader, getProfile, getUser } from '../../services/auth';
 import { Post } from '../../types/Post';
+
 
 interface PostContext {
   posts: Post[];
@@ -9,6 +12,7 @@ interface PostContext {
   likesPost?: ({ postId }: { postId: string }) => void;
   unLikePost?: ({ postId }: { postId: string }) => void;
   deletePost?: ({ postId }: { postId: string }) => void;
+  createPost?: ({ title, description, image }: { title: string, description: string, image: string }) => void;
 }
 
 const defaultValue = {
@@ -48,13 +52,20 @@ function Provider({ children }: { children: ReactNode }) {
           posts: [...unPostLike]
         }
 
-      case "delete_post":
+      case 'create_post':
+        return {
+          posts: [action.payload, ...state.posts]
+        }
+
+      case 'delete_post':
         const deletePost = state.posts;
         const deleteFeed = deletePost.filter((post) => post._id !== action.payload.id);
         return {
           ...state,
           posts: deleteFeed,
-        };
+        }
+
+
 
       default:
         return state
@@ -78,7 +89,7 @@ function Provider({ children }: { children: ReactNode }) {
     }
   }
 
-  async function likesPost({postId}: {postId: string}) {
+  async function likesPost({ postId }: { postId: string }) {
 
     try {
       const authHeader = await getAuthHeader()
@@ -119,6 +130,7 @@ function Provider({ children }: { children: ReactNode }) {
   }
 
 
+
   async function deletePost({ postId }: { postId: string }) {
     try {
       const authHeader = await getAuthHeader();
@@ -134,6 +146,40 @@ function Provider({ children }: { children: ReactNode }) {
     }
   }
 
+  async function createPost({ title, description, image }: { title: string, description: string, image: string }) {
+    try {  
+     const token = await SecureStore.getItemAsync('token')
+      const name = await getUser()
+      const formData = new FormData()
+      formData.append('title', title)
+      formData.append('description', description || "")
+      formData.append('file', image)
+
+        console.log(image);
+        
+      const response= await api.post('posts', formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
+        }
+      })
+          console.log(response);
+          
+      dispatch({
+        type: "create_post",
+        payload: {
+          ...response.data,
+          profile: {
+            name
+          }
+        }
+      })
+      navigation('PostList')
+    } catch (error) {
+      
+
+    }
+  }
 
   return (
     <Context.Provider
@@ -144,6 +190,7 @@ function Provider({ children }: { children: ReactNode }) {
           likesPost,
           unLikePost,
           deletePost,
+          createPost,
         }
 
       }

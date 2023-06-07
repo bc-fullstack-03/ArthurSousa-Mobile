@@ -37,7 +37,8 @@ export function PostItem({ post }: PostItemProps) {
     }
   }
 
-
+  console.log(post.description);
+  
   return (
     <View className="border-b border-gray-400">
       <View className="flex-row gap-2 mt-3 items-center">
@@ -54,7 +55,7 @@ export function PostItem({ post }: PostItemProps) {
         )}
       </Spacer>
 
-      <View className="flex-row gap-2 items-center font-sans mb-3">
+      <View className="flex-row gap-2 items-center font-sans mb-3" >
         {post.comments.length > 0 ? (
           <Chat size={24} color={colors.cyan[400]} weight="fill" />
         ) : (
@@ -70,9 +71,7 @@ export function PostItem({ post }: PostItemProps) {
           )}
           <Text className="text-zinc-200">{post.likes.length}</Text>
         </TouchableOpacity>
-
-          </View>
-          {post.profile._id == profile && (
+        {post.profile._id === profile._id && (
           <TouchableOpacity onPress={handleDelete}>
             <Trash
               color={colors.red[500]}
@@ -80,7 +79,9 @@ export function PostItem({ post }: PostItemProps) {
               weight='fill'
             />
           </TouchableOpacity>
-        )}   
+        )} 
+          </View>
+        
     </View>
   )
 }

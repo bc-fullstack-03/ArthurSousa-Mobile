@@ -9,4 +9,5 @@ export interface Post {
   comments: [],
   likes: [],
   image: boolean,
+  post: string
 }

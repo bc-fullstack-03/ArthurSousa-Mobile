@@ -21,6 +21,7 @@ const Stack = createNativeStackNavigator()
       <Stack.Screen name='PostList'component={PostList} />
       <Stack.Screen  name='CreatePost'component={CreatPost}/>
 
+
      
     </Stack.Navigator>
   );

@@ -10,3 +10,10 @@ export interface UserToken {
   profile: string;
   user: string;
 }
+
+
+export interface AuthHeader {
+  headers: {
+    Authorization: string;
+  };
+}
